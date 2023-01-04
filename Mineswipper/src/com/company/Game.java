@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-//fuck you
+
 public class Game extends JFrame {
 
     //------------Logic--------------
@@ -18,22 +18,24 @@ public class Game extends JFrame {
     //مصفوفة تمنع الاوفرفلو من تابع floodFill
     boolean[][] b;
     boolean[][] f;
-
+    boolean[][] unF;
 
     //------------Front---------------
 
     //وسائط
-    ImageIcon image = new ImageIcon("logo.png");
-    ImageIcon image1 = new ImageIcon("one.jpg");
-    ImageIcon image2 = new ImageIcon("tow.jpg");
-    ImageIcon image3 = new ImageIcon("three.jpg");
-    ImageIcon image4 = new ImageIcon("four.jpg");
-    ImageIcon image5 = new ImageIcon("five.jpg");
-    ImageIcon image6 = new ImageIcon("six.jpg");
-    ImageIcon image7 = new ImageIcon("seven.jpg");
-    ImageIcon image8 = new ImageIcon("eight.jpg");
-    ImageIcon image9 = new ImageIcon("mine.png");
-    ImageIcon image10 = new ImageIcon("flag.png");
+    ImageIcon imageL = new ImageIcon("Mineswipper/Media/logo.png");
+    ImageIcon imageM = new ImageIcon("Mineswipper/Media/mine.png");
+    ImageIcon imageF = new ImageIcon("Mineswipper/Media/flag.png");
+    ImageIcon imageB = new ImageIcon("Mineswipper/Media/button.png");
+    ImageIcon image0 = new ImageIcon("Mineswipper/Media/zero.jpg");
+    ImageIcon image1 = new ImageIcon("Mineswipper/Media/one.jpg");
+    ImageIcon image2 = new ImageIcon("Mineswipper/Media/tow.jpg");
+    ImageIcon image3 = new ImageIcon("Mineswipper/Media/three.jpg");
+    ImageIcon image4 = new ImageIcon("Mineswipper/Media/four.jpg");
+    ImageIcon image5 = new ImageIcon("Mineswipper/Media/five.jpg");
+    ImageIcon image6 = new ImageIcon("Mineswipper/Media/six.jpg");
+    ImageIcon image7 = new ImageIcon("Mineswipper/Media/seven.jpg");
+    ImageIcon image8 = new ImageIcon("Mineswipper/Media/eight.jpg");
 
     JButton[][] button;
     JPanel buttonPanel;
@@ -45,17 +47,19 @@ public class Game extends JFrame {
     JMenuItem open = new JMenuItem("Load Game");
     JMenuItem select = new JMenuItem("Select ");
 
-    //Constructor
-    public Game(int rows, int columns, int numOfMines) {
+    //-----------Constructor------------
+    public Game(int rows, int columns, int numOfMines)  {
+
 
         //------------Logic--------------
 
         this.rows = rows;
         this.columns = columns;
         this.numOfMines = numOfMines;
-        this.f = new boolean[rows + 1][columns + 1];
-        this.b = new boolean[rows + 1][columns + 1];
         board = new int[rows + 5][columns + 5];
+        this.b = new boolean[rows + 1][columns + 1];
+        this.f = new boolean[rows + 1][columns + 1];
+        this.unF = new boolean[rows + 1][columns + 1];
 
         //------------Front---------------
 
@@ -64,7 +68,7 @@ public class Game extends JFrame {
         this.setTitle("Minesweeper Game");
         this.setResizable(false);
         this.getContentPane().setBackground(Color.red);
-        this.setIconImage(image.getImage());
+        this.setIconImage(imageL.getImage());
 
         textPanel = new JPanel();
         textPanel.setVisible(true);
@@ -81,6 +85,7 @@ public class Game extends JFrame {
         textField = new JLabel();
         textField.setBounds(0, 570, 10, 10);
         textField.setBorder(border);
+        //الازرار
         button = new JButton[rows + 1][columns + 1];
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
@@ -88,7 +93,8 @@ public class Game extends JFrame {
                 button[i][j].setVisible(true);
                 button[i][j].setFocusable(false);
                 button[i][j].setSize(30, 30);
-                button[i][j].setBackground(new Color(192, 192, 192));
+                button[i][j].setIcon(imageB);
+
                 buttonPanel.add(button[i][j]);
             }
         }
@@ -126,6 +132,8 @@ public class Game extends JFrame {
         click();
     }
 
+
+
     //عمل الماوس
     public void click() {
 
@@ -144,11 +152,14 @@ public class Game extends JFrame {
 
                         //الزر اليميني يضع علم
                         if (SwingUtilities.isRightMouseButton(e)) {
-                            if (!f[finalI][finalJ])
-
-                                button[finalI][finalJ].setIcon(image10);
-
-
+                            if (!f[finalI][finalJ] && !unF[finalI][finalJ]) {
+                                button[finalI][finalJ].setIcon(imageF);
+                                unF[finalI][finalJ] = true;
+                            }
+                            else if (!f[finalI][finalJ] && unF[finalI][finalJ]){
+                                button[finalI][finalJ].setIcon(imageB);
+                                unF[finalI][finalJ] = false;
+                            }
                         }
 
                         //الزر اليساري لل click
@@ -206,8 +217,12 @@ public class Game extends JFrame {
                     numOfMines++;
                     continue;
                 }
-                //عدم اختيار قنبلة من اول ضغطة
-                if (x == rand1 && y == rand2) {
+                //عدم اختيار قنبلة من اول ضغطة + عمل floodFill
+                if (rand1 == x && rand2 ==y || rand1 == x-1 && rand2 == y-1 ||
+                    rand1 == x-1 && rand2 == y || rand1 == x-1 && rand2 == y+1 ||
+                    rand1 == x && rand2 == y+1 || rand1 == x+1 && rand2 == y+1 ||
+                    rand1 == x+1 && rand2 == y || rand1 == x+1 && rand2 == y-1 ||
+                    rand1 == x && rand2 == y-1) {
                     numOfMines++;
                     continue;
                 }
@@ -344,8 +359,7 @@ public class Game extends JFrame {
 
         if (board[i][j] == 0) {
             f[i][j] = true;
-            button[i][j].setBackground(Color.WHITE);
-            button[i][j].setEnabled(false);
+            button[i][j].setIcon(image0);
         }
 
         if (board[i][j] == 1) {
@@ -396,7 +410,8 @@ public class Game extends JFrame {
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 9) {
+        if (board[i][j] == 9 && !f[i][j]) {
+            f[i][j]=true;
             gameOver();
         }
     }
@@ -405,49 +420,14 @@ public class Game extends JFrame {
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
                 if (board[i][j] == 9) {
-                    button[i][j].setIcon(image9);
+                    f[i][j] = true;
+                    button[i][j].setIcon(imageM);
                     button[i][j].setBackground(Color.red);
                     textField.setForeground(Color.RED);
-//                    button[i][j].setEnabled(false);
-//                    textField.setText("Game Over!");
                 }
                 else
                     getColor(i,j);
             }
         }
     }
-
-
-
 }
-
-
-
-//    public void check(int i, int j) {
-//        boolean over = false;
-//        if (board[i][j] == (rows + 1)) {
-//            gameOver(false);
-//            over = true;
-//        }
-//
-//        if (!over) {
-//            getColor(i, j);
-//        }
-//    }
-//
-//    public void gameOver(boolean won) {
-//        if (!won) {
-//            textField.setForeground(Color.RED);
-//            textField.setText("Game Over!");
-//        } else {
-//            textField.setForeground(Color.GREEN);
-//            textField.setText("You Win!");
-//        }
-//        for (int i = 1; i <= rows; i++) {
-//            for (int j = 1; j <= columns; j++) {
-//                button[i][j].setEnabled(false);
-//                button[i][j].setBackground(Color.BLACK);
-//                button[i][j].setText("*");
-//            }
-//        }
-//    }
