@@ -25,6 +25,7 @@ public class Game extends JFrame {
     //وسائط
     ImageIcon imageL = new ImageIcon("Mineswipper/Media/logo.png");
     ImageIcon imageM = new ImageIcon("Mineswipper/Media/mine.png");
+    ImageIcon imageMW = new ImageIcon("Mineswipper/Media/mineMW.jpg");
     ImageIcon imageF = new ImageIcon("Mineswipper/Media/flag.png");
     ImageIcon imageB = new ImageIcon("Mineswipper/Media/button.png");
     ImageIcon image0 = new ImageIcon("Mineswipper/Media/zero.jpg");
@@ -411,19 +412,23 @@ public class Game extends JFrame {
         }
 
         if (board[i][j] == 9 && !f[i][j]) {
-            f[i][j]=true;
-            gameOver();
+            f[i][j] = true;
+            button[i][j].setIcon(imageM);
+            button[i][j].setBackground(Color.red);
+            textField.setForeground(Color.RED);
+
+            gameOver(i,j);
         }
     }
 
-    public void gameOver() {
+    public void gameOver(int x, int y) {
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
+                if (x == i && y == j)
+                    continue;
                 if (board[i][j] == 9) {
                     f[i][j] = true;
-                    button[i][j].setIcon(imageM);
-                    button[i][j].setBackground(Color.red);
-                    textField.setForeground(Color.RED);
+                    button[i][j].setIcon(imageMW);
                 }
                 else
                     getColor(i,j);
