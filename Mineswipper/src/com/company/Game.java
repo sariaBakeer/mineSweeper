@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-
+//fuck you
 public class Game extends JFrame {
 
     //------------Logic--------------
