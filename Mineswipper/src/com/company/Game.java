@@ -1,44 +1,67 @@
 package com.company;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
 //fuck you
+//fuck you tony
 public class Game extends JFrame {
 
     //------------Logic--------------
+
 
     //متغيرات عدد الاسطر والاعمدة والالغام
     private int rows, columns, numOfMines;
     //مصفوفة الاعداد التي تكتب على الازرار
     int[][] board;
     //متغير يجعل استدعاء ال makeBoard يتم مرة واحدة
-    boolean mark = true;
+    boolean isCalled;
     //مصفوفة تمنع الاوفرفلو من تابع floodFill
     boolean[][] b;
+    //
     boolean[][] f;
+    boolean[][] unF;
+    //
+    boolean isGameOver ;
+    //
+    Timer t ;
+    TimerTask ts;
 
 
     //------------Front---------------
 
     //وسائط
-    ImageIcon image = new ImageIcon("logo.png");
-    ImageIcon image1 = new ImageIcon("one.jpg");
-    ImageIcon image2 = new ImageIcon("tow.jpg");
-    ImageIcon image3 = new ImageIcon("three.jpg");
-    ImageIcon image4 = new ImageIcon("four.jpg");
-    ImageIcon image5 = new ImageIcon("five.jpg");
-    ImageIcon image6 = new ImageIcon("six.jpg");
-    ImageIcon image7 = new ImageIcon("seven.jpg");
-    ImageIcon image8 = new ImageIcon("eight.jpg");
-    ImageIcon image9 = new ImageIcon("mine.png");
-    ImageIcon image10 = new ImageIcon("flag.png");
+    ImageIcon imageL = new ImageIcon("Media/logo.png");
+    ImageIcon imageM = new ImageIcon("Media/mine.png");
+    ImageIcon imageMW = new ImageIcon("Media/mineMW.jpg");
+    ImageIcon imageF = new ImageIcon("Media/flag.png");
+    ImageIcon imageFX = new ImageIcon("Media/flagX.jpg");
+    ImageIcon imageB = new ImageIcon("Media/button.jpg");
+    ImageIcon image0 = new ImageIcon("Media/zero.jpg");
+    ImageIcon image1 = new ImageIcon("Media/one.jpg");
+    ImageIcon image2 = new ImageIcon("Media/tow.jpg");
+    ImageIcon image3 = new ImageIcon("Media/three.jpg");
+    ImageIcon image4 = new ImageIcon("Media/four.jpg");
+    ImageIcon image5 = new ImageIcon("Media/five.jpg");
+    ImageIcon image6 = new ImageIcon("Media/six.jpg");
+    ImageIcon image7 = new ImageIcon("Media/seven.jpg");
+    ImageIcon image8 = new ImageIcon("Media/eight.jpg");
+    ImageIcon image13 = new ImageIcon("Media/smile.jpg");
+    Game game;
 
     JButton[][] button;
     JPanel buttonPanel;
-    JLabel textField;
+    JLabel textFild;
+    JLabel iconsmile;
     JPanel textPanel;
+    JLabel timericone;
+    JPanel p1;
+    JButton b1;
+
     JMenuBar menuPanel;
     JPanel header;
     JMenuItem newFile = new JMenuItem("New Game");
@@ -49,13 +72,24 @@ public class Game extends JFrame {
     public Game(int rows, int columns, int numOfMines) {
 
         //------------Logic--------------
-
         this.rows = rows;
         this.columns = columns;
         this.numOfMines = numOfMines;
-        this.f = new boolean[rows + 1][columns + 1];
-        this.b = new boolean[rows + 1][columns + 1];
         board = new int[rows + 5][columns + 5];
+        this.b = new boolean[rows + 1][columns + 1];
+        this.f = new boolean[rows + 1][columns + 1];
+        this.unF = new boolean[rows + 1][columns + 1];
+
+        t = new Timer();
+        ts = new TimerTask() {
+            int i=0;
+            @Override
+            public void run() {
+                if (isGameOver)
+                    ts.cancel();
+                System.out.println(i++);
+            }
+        };
 
         //------------Front---------------
 
@@ -63,24 +97,23 @@ public class Game extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("Minesweeper Game");
         this.setResizable(false);
-        this.getContentPane().setBackground(Color.red);
-        this.setIconImage(image.getImage());
-
-        textPanel = new JPanel();
-        textPanel.setVisible(true);
-        textPanel.setBackground(Color.BLACK);
+        this.setLayout(new BorderLayout());
+        this.setIconImage(imageL.getImage());
+        this.getContentPane().setBackground(Color.gray);
+//
+//        b1 = new JButton();
+//        b1.setVisible(true);
+//        b1.setHorizontalAlignment(JLabel.RIGHT);
+//        b1.setBounds(0,25,60,30);
+//        b1.setBackground(Color.red);
+//        b1.setLayout(null);
 
 
         buttonPanel = new JPanel();
         buttonPanel.setVisible(true);
-        buttonPanel.setLayout(new GridLayout(rows, columns, 3, 3));
-        buttonPanel.setBackground(Color.black);
-
-
-        Border border = BorderFactory.createLineBorder(Color.gray, 5);
-        textField = new JLabel();
-        textField.setBounds(0, 570, 10, 10);
-        textField.setBorder(border);
+        buttonPanel.setLayout(new GridLayout(rows, columns));
+        buttonPanel.setBackground(Color.gray);
+        buttonPanel.setBounds(0, 80, 700, 680);
         button = new JButton[rows + 1][columns + 1];
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
@@ -88,40 +121,100 @@ public class Game extends JFrame {
                 button[i][j].setVisible(true);
                 button[i][j].setFocusable(false);
                 button[i][j].setSize(30, 30);
-                button[i][j].setBackground(new Color(192, 192, 192));
+                button[i][j].setIcon(imageB);
                 buttonPanel.add(button[i][j]);
             }
         }
+
+        textPanel = new JPanel();
+        textPanel.setVisible(true);
+        textPanel.setBackground(Color.gray);
+        textPanel.setBounds(0, 0, 700, 130);
+        textPanel.revalidate();
+        textPanel.setLayout(null);
+
+
+        textFild = new JLabel();
+        textFild.setHorizontalAlignment(JLabel.LEFT);
+        textFild.setFont(new Font("MV Boli", Font.BOLD, 20));
+        textFild.setForeground(Color.red);
+        textFild.setIcon(image13);
+
+
+        iconsmile = new JLabel();
+        iconsmile.setHorizontalAlignment(JLabel.CENTER);
+        iconsmile.setIcon(image13);
+        iconsmile.setBounds(340, 10, 40, 40);
+
+
+        timericone = new JLabel();
+        timericone.setHorizontalAlignment(JLabel.RIGHT);
+        timericone.setBounds(550, 10, 90, 40);
+        timericone.setBackground(Color.white);
+        timericone.setOpaque(true);
+        timericone.setVisible(true);
+         timericone.setText("0");
+        timericone.setForeground(Color.black);
+        timericone.setLayout(null);
+
+
         menuPanel = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
         menuPanel.add(file);
         menuPanel.add(edit);
-        menuPanel.setBounds(10, 10, 10, 10);
+        menuPanel.setBounds(10, 10, 700, 80);
+
+        newFile.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                game = new Game(18, 18, 70);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         file.add(newFile);
         file.add(open);
         edit.add(select);
+        menuPanel.setBackground(Color.gray);
 
-        header = new JPanel();
-        header.setVisible(true);
-        header.add(menuPanel);
-        header.add(textField);
-        header.setBounds(10, 10, 10, 10);
-
-        // textPanel.add(textField);
+        textPanel.add(iconsmile);
+        textPanel.add(timericone);
+        //textPanel.add(b1);
         this.add(buttonPanel);
-        if (rows==9 && columns==9)
+        this.add(textPanel);
+        textPanel.add(textFild);
+
+        if (rows == 9 && columns == 9)
             this.setSize(450, 450);
-        else if (rows==18 && columns==18)
-            this.setSize(700, 700);
+        else if (rows == 18 && columns == 18)
+            this.setSize(715, 805);
         else
-            this.setSize(975,975);
+            this.setSize(975, 975);
+
 
         this.add(menuPanel, BorderLayout.NORTH);
-        //this.add(header,BorderLayout.NORTH);
         this.revalidate();
         this.setLocationRelativeTo(null);
-        this.setLayout(new BorderLayout());
+        this.setLayout(null);
 
         click();
     }
@@ -139,27 +232,36 @@ public class Game extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
+                        if (!isCalled)
+                            t.schedule(ts, 0, 1000);
+
                         //تابع توزيع الارقام وزرع القنابل يستدعى مرة واحدة
                         makeBoard(finalI, finalJ);
 
-                        //الزر اليميني يضع علم
+                        //الزر اليميني يضع flag
                         if (SwingUtilities.isRightMouseButton(e)) {
-                            if (!f[finalI][finalJ])
 
-                                button[finalI][finalJ].setIcon(image10);
-
-
+                            if (!isGameOver) {
+                                if (!f[finalI][finalJ] && !unF[finalI][finalJ]) {
+                                    button[finalI][finalJ].setIcon(imageF);
+//                                f[finalI][finalJ]=true;
+                                    unF[finalI][finalJ] = true;
+                                } else if (!f[finalI][finalJ] && unF[finalI][finalJ]) {
+                                    button[finalI][finalJ].setIcon(imageB);
+                                    unF[finalI][finalJ] = false;
+                                }
+                            }
                         }
 
                         //الزر اليساري لل click
                         if (SwingUtilities.isLeftMouseButton(e)) {
 
-                            if (board[finalI][finalJ] == 0) {
-                                floodFill(finalI, finalJ);
+                            if (!unF[finalI][finalJ]) {
+                                if (board[finalI][finalJ] == 0) {
+                                    floodFill(finalI, finalJ);
+                                } else
+                                    getColor(finalI, finalJ);
                             }
-                            else
-                                getColor(finalI, finalJ);
-
                         }
                     }
 
@@ -190,7 +292,7 @@ public class Game extends JFrame {
     //انشاء المربعات
     public void makeBoard(int x, int y) {
 
-        if (mark) {
+        if (!isCalled) {
             //اعطاء المصفوفة قيم ابتدائية
             for (int i = 0; i < board.length; i++)
                 for (int j = 0; j < board[i].length; j++)
@@ -206,8 +308,12 @@ public class Game extends JFrame {
                     numOfMines++;
                     continue;
                 }
-                //عدم اختيار قنبلة من اول ضغطة
-                if (x == rand1 && y == rand2) {
+                //عدم اختيار قنبلة من اول ضغطة + عمل floodFill
+                if (rand1 == x && rand2 == y || rand1 == x - 1 && rand2 == y - 1 ||
+                        rand1 == x - 1 && rand2 == y || rand1 == x - 1 && rand2 == y + 1 ||
+                        rand1 == x && rand2 == y + 1 || rand1 == x + 1 && rand2 == y + 1 ||
+                        rand1 == x + 1 && rand2 == y || rand1 == x + 1 && rand2 == y - 1 ||
+                        rand1 == x && rand2 == y - 1) {
                     numOfMines++;
                     continue;
                 }
@@ -248,7 +354,7 @@ public class Game extends JFrame {
             }
 
             //اعطاء قيمة false حتى لايستدعى التابع مرة اخرة
-            mark = false;
+            isCalled = true;
         }
 
         //تخرج من التابع في حال كان مستدعى من قبل
@@ -267,7 +373,7 @@ public class Game extends JFrame {
 
         //111111111111
         if (board[i - 1][j - 1] != -1) {
-            if (board[i - 1][j - 1] == 0 && b[i - 1][j - 1] == false)
+            if (board[i - 1][j - 1] == 0 && !b[i - 1][j - 1])
                 floodFill(i - 1, j - 1);
             else {
                 //متلها ولتحت تنسيقات
@@ -278,7 +384,7 @@ public class Game extends JFrame {
         }
         //2222222222
         if (board[i - 1][j] != -1) {
-            if (board[i - 1][j] == 0 && b[i - 1][j] == false)
+            if (board[i - 1][j] == 0 && !b[i - 1][j])
                 floodFill(i - 1, j);
             else {
                 getColor(i - 1, j);
@@ -287,7 +393,7 @@ public class Game extends JFrame {
         }
         //3333333
         if (board[i - 1][j + 1] != -1) {
-            if (board[i - 1][j + 1] == 0 && b[i - 1][j + 1] == false)
+            if (board[i - 1][j + 1] == 0 && !b[i - 1][j + 1])
                 floodFill(i - 1, j + 1);
             else {
                 getColor(i - 1, j + 1);
@@ -296,7 +402,7 @@ public class Game extends JFrame {
         }
         //4444444
         if (board[i][j + 1] != -1) {
-            if (board[i][j + 1] == 0 && b[i][j + 1] == false)
+            if (board[i][j + 1] == 0 && !b[i][j + 1])
                 floodFill(i, j + 1);
             else {
                 getColor(i, j + 1);
@@ -305,7 +411,7 @@ public class Game extends JFrame {
         }
         //55555555
         if (board[i + 1][j + 1] != -1) {
-            if (board[i + 1][j + 1] == 0 && b[i + 1][j + 1] == false)
+            if (board[i + 1][j + 1] == 0 && !b[i + 1][j + 1])
                 floodFill(i + 1, j + 1);
             else {
                 getColor(i + 1, j + 1);
@@ -314,7 +420,7 @@ public class Game extends JFrame {
         }
         //66666666666
         if (board[i + 1][j] != -1) {
-            if (board[i + 1][j] == 0 && b[i + 1][j] == false)
+            if (board[i + 1][j] == 0 && !b[i + 1][j])
                 floodFill(i + 1, j);
             else {
                 getColor(i + 1, j);
@@ -322,7 +428,7 @@ public class Game extends JFrame {
         }
         //77777777
         if (board[i + 1][j - 1] != -1) {
-            if (board[i + 1][j - 1] == 0 && b[i + 1][j - 1] == false)
+            if (board[i + 1][j - 1] == 0 && !b[i + 1][j - 1])
                 floodFill(i + 1, j - 1);
             else {
                 getColor(i + 1, j - 1);
@@ -330,7 +436,7 @@ public class Game extends JFrame {
         }
         //88888888
         if (board[i][j - 1] != -1) {
-            if (board[i][j - 1] == 0 && b[i][j - 1] == false)
+            if (board[i][j - 1] == 0 && !b[i][j - 1])
                 floodFill(i, j - 1);
             else {
                 getColor(i, j - 1);
@@ -344,110 +450,89 @@ public class Game extends JFrame {
 
         if (board[i][j] == 0) {
             f[i][j] = true;
-            button[i][j].setBackground(Color.WHITE);
-            button[i][j].setEnabled(false);
+            button[i][j].setIcon(image0);
         }
 
-        if (board[i][j] == 1) {
+        if (board[i][j] == 1 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image1);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 2) {
+        if (board[i][j] == 2 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image2);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 3) {
+        if (board[i][j] == 3 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image3);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 4) {
+        if (board[i][j] == 4 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image4);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 5) {
+        if (board[i][j] == 5 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image5);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 6) {
+        if (board[i][j] == 6 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image6);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 7) {
+        if (board[i][j] == 7 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image7);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 8) {
+        if (board[i][j] == 8 && !unF[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(image8);
             button[i][j].setBackground(Color.white);
         }
 
-        if (board[i][j] == 9) {
-            gameOver();
+        if (board[i][j] == 9 && !f[i][j]) {
+            f[i][j] = true;
+            button[i][j].setIcon(imageM);
+            button[i][j].setBackground(Color.red);
+            gameOver(i, j);
         }
     }
 
-    public void gameOver() {
+    public void gameOver(int x, int y) {
+        ts.cancel();
+        isGameOver = true;
+
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
+
+                if (x == i && y == j)
+                    continue;
+
                 if (board[i][j] == 9) {
-                    button[i][j].setIcon(image9);
-                    button[i][j].setBackground(Color.red);
-                    textField.setForeground(Color.RED);
-//                    button[i][j].setEnabled(false);
-//                    textField.setText("Game Over!");
+                    f[i][j] = true;
+                    if (!unF[i][j])
+                        button[i][j].setIcon(imageMW);
+                    else
+                        button[i][j].setIcon(imageF);
+
                 }
+
+                if (board[i][j] != 9 && unF[i][j])
+                    button[i][j].setIcon(imageFX);
                 else
-                    getColor(i,j);
+                    getColor(i, j);
             }
         }
     }
-
-
-
 }
-
-
-
-//    public void check(int i, int j) {
-//        boolean over = false;
-//        if (board[i][j] == (rows + 1)) {
-//            gameOver(false);
-//            over = true;
-//        }
-//
-//        if (!over) {
-//            getColor(i, j);
-//        }
-//    }
-//
-//    public void gameOver(boolean won) {
-//        if (!won) {
-//            textField.setForeground(Color.RED);
-//            textField.setText("Game Over!");
-//        } else {
-//            textField.setForeground(Color.GREEN);
-//            textField.setText("You Win!");
-//        }
-//        for (int i = 1; i <= rows; i++) {
-//            for (int j = 1; j <= columns; j++) {
-//                button[i][j].setEnabled(false);
-//                button[i][j].setBackground(Color.BLACK);
-//                button[i][j].setText("*");
-//            }
-//        }
-//    }
