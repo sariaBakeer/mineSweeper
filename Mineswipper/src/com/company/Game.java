@@ -2,13 +2,12 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
+import java.awt.event.*;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//fuck you
-//fuck you tony
 public class Game extends JFrame {
 
     //------------Logic--------------
@@ -26,10 +25,15 @@ public class Game extends JFrame {
     boolean[][] f;
     boolean[][] unF;
     //
-    boolean isGameOver ;
+
+    boolean isGameOver, isWin ;
     //
     Timer t ;
     TimerTask ts;
+    //
+    int countF = 0;
+    //
+    int constMine;
 
 
     //------------Front---------------
@@ -53,28 +57,34 @@ public class Game extends JFrame {
     ImageIcon image13 = new ImageIcon("Media/smile.jpg");
     Game game;
 
+
     JButton[][] button;
     JPanel buttonPanel;
     JLabel textFild;
+
     JLabel iconsmile;
     JPanel textPanel;
     JLabel timericone;
+
     JPanel p1;
     JButton b1;
 
     JMenuBar menuPanel;
-    JPanel header;
     JMenuItem newFile = new JMenuItem("New Game");
     JMenuItem open = new JMenuItem("Load Game");
     JMenuItem select = new JMenuItem("Select ");
 
-    //Constructor
-    public Game(int rows, int columns, int numOfMines) {
+
+
+    //-----------Constructor------------
+    public Game(int rows, int columns, int numOfMines)  {
 
         //------------Logic--------------
         this.rows = rows;
         this.columns = columns;
         this.numOfMines = numOfMines;
+
+        constMine = numOfMines;
         board = new int[rows + 5][columns + 5];
         this.b = new boolean[rows + 1][columns + 1];
         this.f = new boolean[rows + 1][columns + 1];
@@ -87,11 +97,22 @@ public class Game extends JFrame {
             public void run() {
                 if (isGameOver)
                     ts.cancel();
-                System.out.println(i++);
+                 timericone.setText(Integer.toString(i++));
             }
         };
 
-        //------------Front---------------
+
+        t = new Timer();
+        ts = new TimerTask() {
+            int i=0;
+            @Override
+            public void run() {
+                System.out.println(++i);
+
+            }
+        };
+
+        //------------Front--------------
 
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -100,21 +121,16 @@ public class Game extends JFrame {
         this.setLayout(new BorderLayout());
         this.setIconImage(imageL.getImage());
         this.getContentPane().setBackground(Color.gray);
-//
-//        b1 = new JButton();
-//        b1.setVisible(true);
-//        b1.setHorizontalAlignment(JLabel.RIGHT);
-//        b1.setBounds(0,25,60,30);
-//        b1.setBackground(Color.red);
-//        b1.setLayout(null);
+
 
 
         buttonPanel = new JPanel();
         buttonPanel.setVisible(true);
         buttonPanel.setLayout(new GridLayout(rows, columns));
         buttonPanel.setBackground(Color.gray);
-        buttonPanel.setBounds(0, 80, 700, 680);
-        button = new JButton[rows + 1][columns + 1];
+
+        buttonPanel.setBounds(0,80,700,680);
+        button= new JButton[rows + 1][columns + 1];
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
                 button[i][j] = new JButton();
@@ -129,7 +145,8 @@ public class Game extends JFrame {
         textPanel = new JPanel();
         textPanel.setVisible(true);
         textPanel.setBackground(Color.gray);
-        textPanel.setBounds(0, 0, 700, 130);
+
+        textPanel.setBounds(0,0,700,130);
         textPanel.revalidate();
         textPanel.setLayout(null);
 
@@ -156,6 +173,7 @@ public class Game extends JFrame {
          timericone.setText("0");
         timericone.setForeground(Color.black);
         timericone.setLayout(null);
+
 
 
         menuPanel = new JMenuBar();
@@ -191,6 +209,7 @@ public class Game extends JFrame {
 
             }
         });
+
         file.add(newFile);
         file.add(open);
         edit.add(select);
@@ -199,6 +218,7 @@ public class Game extends JFrame {
         textPanel.add(iconsmile);
         textPanel.add(timericone);
         //textPanel.add(b1);
+
         this.add(buttonPanel);
         this.add(textPanel);
         textPanel.add(textFild);
@@ -206,9 +226,11 @@ public class Game extends JFrame {
         if (rows == 9 && columns == 9)
             this.setSize(450, 450);
         else if (rows == 18 && columns == 18)
+
             this.setSize(715, 805);
         else
             this.setSize(975, 975);
+
 
 
         this.add(menuPanel, BorderLayout.NORTH);
@@ -218,6 +240,8 @@ public class Game extends JFrame {
 
         click();
     }
+
+
 
     //عمل الماوس
     public void click() {
@@ -233,7 +257,8 @@ public class Game extends JFrame {
                     public void mouseClicked(MouseEvent e) {
 
                         if (!isCalled)
-                            t.schedule(ts, 0, 1000);
+
+                            t.schedule(ts, new Date(),1000);
 
                         //تابع توزيع الارقام وزرع القنابل يستدعى مرة واحدة
                         makeBoard(finalI, finalJ);
@@ -242,14 +267,23 @@ public class Game extends JFrame {
                         if (SwingUtilities.isRightMouseButton(e)) {
 
                             if (!isGameOver) {
+
                                 if (!f[finalI][finalJ] && !unF[finalI][finalJ]) {
-                                    button[finalI][finalJ].setIcon(imageF);
-//                                f[finalI][finalJ]=true;
-                                    unF[finalI][finalJ] = true;
+                                    countF++;
+                                    if (countF == constMine) {
+                                        button[finalI][finalJ].setIcon(imageF);
+                                        win();
+                                    }
+                                    else {
+                                        button[finalI][finalJ].setIcon(imageF);
+                                        unF[finalI][finalJ] = true;
+                                    }
                                 } else if (!f[finalI][finalJ] && unF[finalI][finalJ]) {
                                     button[finalI][finalJ].setIcon(imageB);
                                     unF[finalI][finalJ] = false;
+                                    countF--;
                                 }
+
                             }
                         }
 
@@ -257,6 +291,7 @@ public class Game extends JFrame {
                         if (SwingUtilities.isLeftMouseButton(e)) {
 
                             if (!unF[finalI][finalJ]) {
+
                                 if (board[finalI][finalJ] == 0) {
                                     floodFill(finalI, finalJ);
                                 } else
@@ -268,17 +303,14 @@ public class Game extends JFrame {
                     @Override
                     public void mousePressed(MouseEvent e) {
                     }
-
                     @Override
                     public void mouseReleased(MouseEvent e) {
 
                     }
-
                     @Override
                     public void mouseEntered(MouseEvent e) {
 
                     }
-
                     @Override
                     public void mouseExited(MouseEvent e) {
 
@@ -309,11 +341,12 @@ public class Game extends JFrame {
                     continue;
                 }
                 //عدم اختيار قنبلة من اول ضغطة + عمل floodFill
-                if (rand1 == x && rand2 == y || rand1 == x - 1 && rand2 == y - 1 ||
-                        rand1 == x - 1 && rand2 == y || rand1 == x - 1 && rand2 == y + 1 ||
-                        rand1 == x && rand2 == y + 1 || rand1 == x + 1 && rand2 == y + 1 ||
-                        rand1 == x + 1 && rand2 == y || rand1 == x + 1 && rand2 == y - 1 ||
-                        rand1 == x && rand2 == y - 1) {
+
+                if (rand1 == x && rand2 ==y || rand1 == x-1 && rand2 == y-1 ||
+                    rand1 == x-1 && rand2 == y || rand1 == x-1 && rand2 == y+1 ||
+                    rand1 == x && rand2 == y+1 || rand1 == x+1 && rand2 == y+1 ||
+                    rand1 == x+1 && rand2 == y || rand1 == x+1 && rand2 == y-1 ||
+                    rand1 == x && rand2 == y-1) {
                     numOfMines++;
                     continue;
                 }
@@ -505,13 +538,15 @@ public class Game extends JFrame {
             f[i][j] = true;
             button[i][j].setIcon(imageM);
             button[i][j].setBackground(Color.red);
-            gameOver(i, j);
+
+            gameOver(i,j);
         }
     }
 
     public void gameOver(int x, int y) {
         ts.cancel();
         isGameOver = true;
+
 
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
@@ -529,10 +564,27 @@ public class Game extends JFrame {
                 }
 
                 if (board[i][j] != 9 && unF[i][j])
+
                     button[i][j].setIcon(imageFX);
                 else
                     getColor(i, j);
             }
         }
     }
+
+
+    public void win() {
+
+        isGameOver = true;
+        t.cancel();
+        isWin = true;
+        for (int i = 1; i <= rows; i++) {
+            for (int j = 1; j <= columns; j++) {
+                if (board[i][j]!=9)
+                    getColor(i,j);
+            }
+        }
+    }
+
+
 }
