@@ -1,13 +1,11 @@
 package com.company;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class MenuFrame2 extends JFrame {
-
 
     JButton b1;
     JButton b2;
@@ -16,6 +14,8 @@ public class MenuFrame2 extends JFrame {
     JLabel textfield;
     JLabel textfield2;
     Game game ;
+    MultiPlayerGame multiPlayerGame;
+
 
 
     MenuFrame2() {
@@ -56,7 +56,7 @@ public class MenuFrame2 extends JFrame {
         b1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                game = new Game(18,18,92);
+                game = new Game(18,18,40);
                 close();
 
             }
@@ -80,6 +80,33 @@ public class MenuFrame2 extends JFrame {
 
             }
         });
+        b2.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                multiPlayerGame = new MultiPlayerGame(18, 18, 40);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         b2.setFocusPainted(false);
         this.add(textfield);
         this.add(b1);

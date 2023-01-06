@@ -88,7 +88,6 @@ public class MenuFrame extends JFrame {
         this.setLocationRelativeTo(null);
     }
     public void close(){
-
         this.setVisible(false);
     }
 
