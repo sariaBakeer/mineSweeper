@@ -40,8 +40,8 @@ public class Game extends JFrame {
 
     //وسائط
     ImageIcon imageL = new ImageIcon("Media/logo.png");
-    ImageIcon imageM = new ImageIcon("Media/mine.png");
-    ImageIcon imageMW = new ImageIcon("Media/mineMW.jpg");
+    ImageIcon imageM = new ImageIcon("mine22.jpg");
+    ImageIcon imageMW = new ImageIcon("mine2.jpg");
     ImageIcon imageF = new ImageIcon("Media/flag.png");
     ImageIcon imageFX = new ImageIcon("Media/flagX.jpg");
     ImageIcon imageB = new ImageIcon("Media/button.jpg");
@@ -54,7 +54,7 @@ public class Game extends JFrame {
     ImageIcon image6 = new ImageIcon("Media/six.jpg");
     ImageIcon image7 = new ImageIcon("Media/seven.jpg");
     ImageIcon image8 = new ImageIcon("Media/eight.jpg");
-    ImageIcon image13 = new ImageIcon("Media/smile.jpg");
+    ImageIcon image13 = new ImageIcon("smile.jpg");
     Game game;
 
 
@@ -74,7 +74,7 @@ public class Game extends JFrame {
     JMenuItem open = new JMenuItem("Load Game");
     JMenuItem select = new JMenuItem("Select ");
 
-
+    MenuFrame3 menu2;
 
     //-----------Constructor------------
     public Game(int rows, int columns, int numOfMines)  {
@@ -97,20 +97,22 @@ public class Game extends JFrame {
             public void run() {
                 if (isGameOver)
                     ts.cancel();
-                 timericone.setText(Integer.toString(i++));
+                 timericone.setText(Integer.toString(++i));
+                 timericone.setForeground(Color.red);
+                 timericone.setFont(new Font("mono",Font.BOLD,35));
             }
         };
 
 
-        t = new Timer();
-        ts = new TimerTask() {
-            int i=0;
-            @Override
-            public void run() {
-                System.out.println(++i);
-
-            }
-        };
+//        t = new Timer();
+//        ts = new TimerTask() {
+//            int i=0;
+//            @Override
+//            public void run() {
+//                System.out.println(++i);
+//
+//            }
+//        };
 
         //------------Front--------------
 
@@ -144,8 +146,7 @@ public class Game extends JFrame {
 
         textPanel = new JPanel();
         textPanel.setVisible(true);
-        textPanel.setBackground(Color.gray);
-
+        textPanel.setBackground(Color.lightGray);
         textPanel.setBounds(0,0,700,130);
         textPanel.revalidate();
         textPanel.setLayout(null);
@@ -153,25 +154,30 @@ public class Game extends JFrame {
 
         textFild = new JLabel();
         textFild.setHorizontalAlignment(JLabel.LEFT);
-        textFild.setFont(new Font("MV Boli", Font.BOLD, 20));
+        textFild.setBounds(20, 3, 200, 50);
+        textFild.setBackground(Color.BLACK);
+        textFild.setFont(new Font("Arrival", Font.BOLD, 20));
         textFild.setForeground(Color.red);
-        textFild.setIcon(image13);
-
+     //   textFild.setText("winner winner chicken dinner");
+        textFild.setLayout(null);
+        textFild.setVisible(true);
 
         iconsmile = new JLabel();
         iconsmile.setHorizontalAlignment(JLabel.CENTER);
         iconsmile.setIcon(image13);
-        iconsmile.setBounds(340, 10, 40, 40);
+        iconsmile.setBackground(Color.lightGray);
+        iconsmile.setBounds(330, 3, 50, 50);
 
 
         timericone = new JLabel();
         timericone.setHorizontalAlignment(JLabel.RIGHT);
         timericone.setBounds(550, 10, 90, 40);
-        timericone.setBackground(Color.white);
+        timericone.setBackground(Color.BLACK);
         timericone.setOpaque(true);
         timericone.setVisible(true);
-         timericone.setText("0");
-        timericone.setForeground(Color.black);
+        timericone.setText("00:00");
+        timericone.setForeground(Color.red);
+        timericone.setFont(new Font("Arrival",Font.BOLD,35));
         timericone.setLayout(null);
 
 
@@ -179,6 +185,7 @@ public class Game extends JFrame {
         menuPanel = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenu edit = new JMenu("Edit");
+         new JMenuItem("Select ");
         menuPanel.add(file);
         menuPanel.add(edit);
         menuPanel.setBounds(10, 10, 700, 80);
@@ -209,7 +216,33 @@ public class Game extends JFrame {
 
             }
         });
+        select.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                menu2 = new MenuFrame3();
 
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         file.add(newFile);
         file.add(open);
         edit.add(select);
@@ -217,19 +250,25 @@ public class Game extends JFrame {
 
         textPanel.add(iconsmile);
         textPanel.add(timericone);
+        textPanel.add(textFild);
         //textPanel.add(b1);
 
         this.add(buttonPanel);
         this.add(textPanel);
-        textPanel.add(textFild);
 
-        if (rows == 9 && columns == 9)
-            this.setSize(450, 450);
-        else if (rows == 18 && columns == 18)
 
-            this.setSize(715, 805);
+        if (rows == 11 && columns == 11){
+            this.setSize(535, 560);
+             buttonPanel.setBounds(0,80,520,430);
+            iconsmile.setBounds(242, 5, 50, 50);
+            timericone.setBounds(420, 10, 90, 40);
+
+        }
+        else if (rows == 20 && columns == 20)
+
+            this.setSize(720, 810);
         else
-            this.setSize(975, 975);
+            this.setSize(715, 805);
 
 
 
@@ -483,7 +522,8 @@ public class Game extends JFrame {
 
         if (board[i][j] == 0) {
             f[i][j] = true;
-            button[i][j].setIcon(image0);
+            button[i][j].setIcon(imageB);
+            button[i][j].setEnabled(false);
         }
 
         if (board[i][j] == 1 && !unF[i][j]) {
@@ -537,7 +577,7 @@ public class Game extends JFrame {
         if (board[i][j] == 9 && !f[i][j]) {
             f[i][j] = true;
             button[i][j].setIcon(imageM);
-            button[i][j].setBackground(Color.red);
+           // button[i][j].setBackground(Color.red);
 
             gameOver(i,j);
         }
@@ -546,7 +586,7 @@ public class Game extends JFrame {
     public void gameOver(int x, int y) {
         ts.cancel();
         isGameOver = true;
-
+        textFild.setText("NOOB");
 
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
@@ -574,7 +614,7 @@ public class Game extends JFrame {
 
 
     public void win() {
-
+        textFild.setText("winner winner Chicken dinner");
         isGameOver = true;
         t.cancel();
         isWin = true;
@@ -584,7 +624,6 @@ public class Game extends JFrame {
                     getColor(i,j);
             }
         }
-    }
+    }}
 
 
-}
