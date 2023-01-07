@@ -12,7 +12,7 @@ public class MultiPlayerGame extends JFrame {
 
     //-----------MultiPlayer------------
     int counter = 1;
-    int p1Point=0, p2Point=0;
+    int p1Point = 0, p2Point = 0;
 
     boolean[][] isClick;
 
@@ -36,7 +36,7 @@ public class MultiPlayerGame extends JFrame {
 
     boolean isGameOver;
     //
-    Timer t ;
+    Timer t;
     TimerTask ts;
     //
     int countF = 0;
@@ -47,7 +47,7 @@ public class MultiPlayerGame extends JFrame {
     //------------Front---------------
 
     //وسائط
-    ImageIcon imageL = new ImageIcon("Media/logo.png");
+            ImageIcon imageL = new ImageIcon("Media/logo.png");
     ImageIcon imageM = new ImageIcon("mine22.jpg");
     ImageIcon imageMW = new ImageIcon("mine2.jpg");
     ImageIcon imageF = new ImageIcon("Media/flag.png");
@@ -63,6 +63,7 @@ public class MultiPlayerGame extends JFrame {
     ImageIcon image7 = new ImageIcon("Media/seven.jpg");
     ImageIcon image8 = new ImageIcon("Media/eight.jpg");
     ImageIcon image13 = new ImageIcon("smile.jpg");
+
     Game game;
 
 
@@ -90,9 +91,8 @@ public class MultiPlayerGame extends JFrame {
     JMenuItem select = new JMenuItem("Select ");
 
 
-
     //-----------Constructor-----------
-    public MultiPlayerGame(int rows, int columns, int numOfMines)  {
+    public MultiPlayerGame(int rows, int columns, int numOfMines) {
         //------------Logic--------------
         this.rows = rows;
         this.columns = columns;
@@ -107,15 +107,17 @@ public class MultiPlayerGame extends JFrame {
 
         t = new Timer();
         ts = new TimerTask() {
-            int i=0;
-            int j=0;
+            int i = 0;
+            int j = 0;
+
             @Override
             public void run() {
                 if (isGameOver)
                     ts.cancel();
                 timericone.setText(j + " : " + Integer.toString(i++));
-                if(i==60){
-                    i=0; j++;
+                if (i == 60) {
+                    i = 0;
+                    j++;
                 }
 
             }
@@ -132,14 +134,13 @@ public class MultiPlayerGame extends JFrame {
         this.getContentPane().setBackground(Color.gray);
 
 
-
         buttonPanel = new JPanel();
         buttonPanel.setVisible(true);
         buttonPanel.setLayout(new GridLayout(rows, columns));
         buttonPanel.setBackground(Color.gray);
 
-        buttonPanel.setBounds(0,80,700,680);
-        button= new JButton[rows + 1][columns + 1];
+        buttonPanel.setBounds(0, 80, 700, 680);
+        button = new JButton[rows + 1][columns + 1];
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
                 button[i][j] = new JButton();
@@ -153,9 +154,12 @@ public class MultiPlayerGame extends JFrame {
 
         textPanel = new JPanel();
         textPanel.setVisible(true);
+
         textPanel.setBackground(Color.lightGray);
 
-        textPanel.setBounds(0,0,700,130);
+
+
+        textPanel.setBounds(0, 0, 700, 130);
         textPanel.revalidate();
         textPanel.setLayout(null);
 
@@ -167,21 +171,23 @@ public class MultiPlayerGame extends JFrame {
 
 
 
-        iconsmile = new JLabel();
+                iconsmile = new JLabel();
         iconsmile.setHorizontalAlignment(JLabel.CENTER);
         iconsmile.setIcon(image13);
+
         iconsmile.setBounds(340, 5, 50, 50);
 
 
-        timericone = new JLabel();
+                timericone = new JLabel();
         timericone.setHorizontalAlignment(JLabel.RIGHT);
         timericone.setBounds(550, 10, 90, 40);
+
         timericone.setBackground(Color.BLACK);
         timericone.setOpaque(true);
         timericone.setVisible(true);
         timericone.setText("00:00");
         timericone.setForeground(Color.red);
-        timericone.setFont(new Font("Arrival",Font.BOLD,35));
+        timericone.setFont(new Font("Arrival", Font.BOLD, 35));
         timericone.setLayout(null);
 
 
@@ -190,7 +196,7 @@ public class MultiPlayerGame extends JFrame {
         WhichPlayer.setHorizontalAlignment(JLabel.LEFT);
         WhichPlayer.setBounds(120, 10, 200, 40);
         WhichPlayer.setBackground(Color.lightGray);
-        WhichPlayer.setFont(new Font("Arrival",Font.BOLD,24));
+        WhichPlayer.setFont(new Font("Arrival", Font.BOLD, 24));
         WhichPlayer.setOpaque(true);
         WhichPlayer.setVisible(true);
         WhichPlayer.setText("0");
@@ -201,7 +207,7 @@ public class MultiPlayerGame extends JFrame {
         pointer.setHorizontalAlignment(JLabel.LEFT);
         pointer.setBounds(20, 10, 90, 40);
         pointer.setBackground(Color.BLACK);
-        pointer.setFont(new Font("Arrival",Font.BOLD,24));
+        pointer.setFont(new Font("Arrival", Font.BOLD, 24));
         pointer.setOpaque(true);
         pointer.setVisible(true);
         pointer.setText("0 : 0");
@@ -213,7 +219,7 @@ public class MultiPlayerGame extends JFrame {
         role.setHorizontalAlignment(JLabel.LEFT);
         role.setBounds(150, 10, 80, 40);
         role.setBackground(Color.lightGray);
-        role.setFont(new Font("Arrival",Font.BOLD,24));
+        role.setFont(new Font("Arrival", Font.BOLD, 24));
         role.setOpaque(true);
         role.setVisible(true);
         role.setText("One");
@@ -222,8 +228,6 @@ public class MultiPlayerGame extends JFrame {
         textPanel.add(role);
 
         //------------------------------------------
-
-
 
 
         menuPanel = new JMenuBar();
@@ -269,22 +273,24 @@ public class MultiPlayerGame extends JFrame {
         textPanel.add(timericone);
         textPanel.add(pointer);
 
+
         this.add(buttonPanel);
         this.add(textPanel);
         textPanel.add(textFild);
 
-        if (rows == 11 && columns == 11){
+
+        if (rows == 11 && columns == 11) {
             this.setSize(535, 560);
-            buttonPanel.setBounds(0,80,520,430);
+            buttonPanel.setBounds(0, 80, 520, 430);
             iconsmile.setBounds(242, 5, 50, 50);
             timericone.setBounds(420, 10, 90, 40);
 
-        }
-        else if (rows == 20 && columns == 20)
+        } else if (rows == 20 && columns == 20)
 
             this.setSize(720, 810);
         else
             this.setSize(715, 805);
+
 
 
 
@@ -311,7 +317,7 @@ public class MultiPlayerGame extends JFrame {
                     public void mouseClicked(MouseEvent e) {
                         if (!isCalled)
 
-                            t.schedule(ts, new Date(),1000);
+                            t.schedule(ts, new Date(), 1000);
 
                         //تابع توزيع الارقام وزرع القنابل يستدعى مرة واحدة
                         makeBoard(finalI, finalJ);
@@ -320,7 +326,7 @@ public class MultiPlayerGame extends JFrame {
                         if (SwingUtilities.isRightMouseButton(e)) {
                             if (!isGameOver) {
 
-                                if(counter%2!=0) {
+                                if (counter % 2 != 0) {
                                     if (!f[finalI][finalJ] && !unF[finalI][finalJ]) {
                                         countF++;
                                         if (countF == constMine) {
@@ -361,13 +367,13 @@ public class MultiPlayerGame extends JFrame {
                         if (SwingUtilities.isLeftMouseButton(e)) {
                             if (!unF[finalI][finalJ]) {
 
-                                if(counter%2!=0) {
+                                if (counter % 2 != 0) {
                                     if (board[finalI][finalJ] == 0) {
                                         floodFill(finalI, finalJ);
                                     } else
                                         getColor(finalI, finalJ);
                                     counter++;
-                                } else{
+                                } else {
                                     if (board[finalI][finalJ] == 0) {
                                         floodFill(finalI, finalJ);
                                     } else
@@ -381,7 +387,7 @@ public class MultiPlayerGame extends JFrame {
                         visibleNumberOfMine = constMine - countF;
                         System.out.println(visibleNumberOfMine);
 
-                        if (counter%2 != 0 && !f[finalI][finalJ])
+                        if (counter % 2 != 0 && !f[finalI][finalJ])
                             role.setText("One");
                         else
                             role.setText("Tow");
@@ -390,14 +396,17 @@ public class MultiPlayerGame extends JFrame {
                     @Override
                     public void mousePressed(MouseEvent e) {
                     }
+
                     @Override
                     public void mouseReleased(MouseEvent e) {
 
                     }
+
                     @Override
                     public void mouseEntered(MouseEvent e) {
 
                     }
+
                     @Override
                     public void mouseExited(MouseEvent e) {
 
@@ -429,11 +438,11 @@ public class MultiPlayerGame extends JFrame {
                 }
                 //عدم اختيار قنبلة من اول ضغطة + عمل floodFill
 
-                if (rand1 == x && rand2 ==y || rand1 == x-1 && rand2 == y-1 ||
-                        rand1 == x-1 && rand2 == y || rand1 == x-1 && rand2 == y+1 ||
-                        rand1 == x && rand2 == y+1 || rand1 == x+1 && rand2 == y+1 ||
-                        rand1 == x+1 && rand2 == y || rand1 == x+1 && rand2 == y-1 ||
-                        rand1 == x && rand2 == y-1) {
+                if (rand1 == x && rand2 == y || rand1 == x - 1 && rand2 == y - 1 ||
+                        rand1 == x - 1 && rand2 == y || rand1 == x - 1 && rand2 == y + 1 ||
+                        rand1 == x && rand2 == y + 1 || rand1 == x + 1 && rand2 == y + 1 ||
+                        rand1 == x + 1 && rand2 == y || rand1 == x + 1 && rand2 == y - 1 ||
+                        rand1 == x && rand2 == y - 1) {
                     numOfMines++;
                     continue;
                 }
@@ -485,7 +494,7 @@ public class MultiPlayerGame extends JFrame {
     //الملأ بالطوفان
     public void floodFill(int i, int j) {
 
-        if (counter==1) {
+        if (counter == 1) {
 
             //كل صفر يتم فتحه يؤشر عليه ب true حتى لايدخل اليه التابع مرة ثانية
             b[i][j] = true;
@@ -565,7 +574,7 @@ public class MultiPlayerGame extends JFrame {
                 }
 
             }
-        }else{
+        } else {
             //كل صفر يتم فتحه يؤشر عليه ب true حتى لايدخل اليه التابع مرة ثانية
             b[i][j] = true;
 
@@ -650,9 +659,9 @@ public class MultiPlayerGame extends JFrame {
     }
 
     //اعطاء الالوان والتنسيقات
-    public void getColor(int i, int j){
+    public void getColor(int i, int j) {
 
-        int countPoint=0;
+        int countPoint = 0;
 
         if (board[i][j] == 0) {
             f[i][j] = true;
@@ -733,13 +742,12 @@ public class MultiPlayerGame extends JFrame {
 
         }
 
-        if(counter%2 != 0) {
+        if (counter % 2 != 0) {
             p1Point += countPoint;
-            pointer.setText(Integer.toString(p1Point) +" : " + Integer.toString(p2Point));
-        }
-        else {
+            pointer.setText(Integer.toString(p1Point) + " : " + Integer.toString(p2Point));
+        } else {
             p2Point += countPoint;
-            pointer.setText(Integer.toString(p1Point) +" : " + Integer.toString(p2Point));
+            pointer.setText(Integer.toString(p1Point) + " : " + Integer.toString(p2Point));
         }
 
         if (board[i][j] == 9 && !f[i][j]) {
@@ -747,7 +755,7 @@ public class MultiPlayerGame extends JFrame {
             button[i][j].setIcon(imageM);
             button[i][j].setBackground(Color.red);
 
-            gameOver(i,j);
+            gameOver(i, j);
         }
     }
 
@@ -838,7 +846,7 @@ public class MultiPlayerGame extends JFrame {
         }
 
         textPanel.add(WhichPlayer);
-        if(counter%2!=0)
+        if (counter % 2 != 0)
             WhichPlayer.setText("player one Lose");
         else
             WhichPlayer.setText("player tow Lose");
@@ -853,16 +861,15 @@ public class MultiPlayerGame extends JFrame {
 
         for (int i = 1; i <= rows; i++) {
             for (int j = 1; j <= columns; j++) {
-                if (board[i][j]!=9)
-                    getColorFloodFill(i,j);
+                if (board[i][j] != 9)
+                    getColorFloodFill(i, j);
             }
         }
 
         textPanel.add(WhichPlayer);
-        if(p1Point>p2Point)
+        if (p1Point > p2Point)
             WhichPlayer.setText("player one Win : " + p1Point);
         else
             WhichPlayer.setText("player tow Win : " + p2Point);
     }
-
 }

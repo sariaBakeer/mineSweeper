@@ -1,6 +1,5 @@
 package com.company;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -8,15 +7,16 @@ import java.awt.event.MouseListener;
 
 public class MenuFrame2 extends JFrame {
 
-
     JButton b1;
     JButton b2;
     JLabel label;
     JPanel textPanel;
     JLabel textfield;
     JLabel textfield2;
+
     MenuFrame3 menu2;
     MultiPlayerGame multiPlayerGame;
+
 
 
     MenuFrame2() {
@@ -61,8 +61,10 @@ public class MenuFrame2 extends JFrame {
         b1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
             menu2 = new MenuFrame3();
             close();
+
             }
             @Override
             public void mousePressed(MouseEvent e) {
@@ -85,6 +87,7 @@ public class MenuFrame2 extends JFrame {
             }
         });
         b2.addMouseListener(new MouseListener() {
+
                                 @Override
                                 public void mouseClicked(MouseEvent e) {
                                 multiPlayerGame = new MultiPlayerGame(20,20,64);
@@ -113,6 +116,7 @@ public class MenuFrame2 extends JFrame {
 
 
                 b2.setFocusPainted(false);
+
         this.add(textfield);
         this.add(b1);
         this.add(b2);

@@ -39,6 +39,7 @@ public class Game extends JFrame {
     //------------Front---------------
 
     //وسائط
+
     ImageIcon imageL = new ImageIcon("Media/logo.png");
     ImageIcon imageM = new ImageIcon("mine22.jpg");
     ImageIcon imageMW = new ImageIcon("mine2.jpg");
@@ -55,7 +56,8 @@ public class Game extends JFrame {
     ImageIcon image7 = new ImageIcon("Media/seven.jpg");
     ImageIcon image8 = new ImageIcon("Media/eight.jpg");
     ImageIcon image13 = new ImageIcon("smile.jpg");
-    Game game;
+Game game;
+
 
 
     JButton[][] button;
@@ -65,6 +67,7 @@ public class Game extends JFrame {
     JLabel iconsmile;
     JPanel textPanel;
     JLabel timericone;
+
 
     JPanel p1;
     JButton b1;
@@ -93,6 +96,7 @@ public class Game extends JFrame {
         t = new Timer();
         ts = new TimerTask() {
             int i=0;
+            int j=0;
             @Override
             public void run() {
                 if (isGameOver)
@@ -113,6 +117,8 @@ public class Game extends JFrame {
 //
 //            }
 //        };
+
+
 
         //------------Front--------------
 
@@ -179,7 +185,6 @@ public class Game extends JFrame {
         timericone.setForeground(Color.red);
         timericone.setFont(new Font("Arrival",Font.BOLD,35));
         timericone.setLayout(null);
-
 
 
         menuPanel = new JMenuBar();
@@ -279,8 +284,6 @@ public class Game extends JFrame {
 
         click();
     }
-
-
 
     //عمل الماوس
     public void click() {
@@ -611,7 +614,6 @@ public class Game extends JFrame {
             }
         }
     }
-
 
     public void win() {
         textFild.setText("winner winner Chicken dinner");
